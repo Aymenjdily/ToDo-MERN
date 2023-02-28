@@ -10,7 +10,17 @@ const getAllTasks = async (req, res) => {
 // post a task
 const postTask = async (req, res) => {
     const { title, notes } = req.body
+    let emptyFields = []
 
+    if(!title){
+        emptyFields.push('title')
+    }
+    if(emptyFields.length > 0){
+        return res.status(400).json({
+            error: 'Please fill in field', 
+            emptyFields
+        })
+    }
     // create task
     try {
         const task = await taskModel.create({ title, notes })
